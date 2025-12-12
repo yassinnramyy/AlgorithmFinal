@@ -4,7 +4,7 @@ import string
 import matplotlib.pyplot as plt
 
 
-def compute_lps(pattern):
+def LPS_array(pattern):
     """
     Compute the Longest Proper Prefix which is also Suffix array
 
@@ -52,7 +52,7 @@ def kmp_search(text, pattern):
         return []
 
     # Compute LPS array
-    lps = compute_lps(pattern)
+    lps = LPS_array(pattern)
 
     indices = []
     i = 0  # index for text
@@ -77,11 +77,18 @@ def kmp_search(text, pattern):
 
 
 def generate_test_data(n, pattern_length=100):
-    """Generate random text and pattern for testing"""
+    """Generate text with pattern planted inside"""
     text = ''.join(random.choices(string.ascii_uppercase, k=n))
     pattern = ''.join(random.choices(string.ascii_uppercase, k=pattern_length))
-    return text, pattern
 
+    # Plant the pattern at a few random positions
+    text_list = list(text)
+    for _ in range(5):  # Plant 5 times
+        if n > pattern_length:
+            pos = random.randint(0, n - pattern_length)
+            text_list[pos:pos + pattern_length] = pattern
+
+    return ''.join(text_list), pattern
 
 def test_kmp(n):
     """Test KMP algorithm with dataset of size n"""
